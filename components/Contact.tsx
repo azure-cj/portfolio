@@ -1,39 +1,65 @@
+"use client";
+
 import ContactForm from "@/components/ContactForm";
+import { Github } from "lucide-react";
 
 export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative py-24 px-6 md:px-12 lg:px-24"
-      aria-labelledby="contact-heading"
+      className="px-6 py-28 md:px-16 lg:px-24"
+      style={{ background: "var(--bg-alt)" }}
     >
-      {/* Top gradient rule */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent"
-      />
+      <div className="mx-auto max-w-6xl">
+        <div className="grid grid-cols-1 gap-16 md:grid-cols-[1fr_auto_1fr]">
 
-      <div className="relative mx-auto max-w-2xl">
-        {/* Section header */}
-        <div className="mb-10 flex flex-col gap-2">
-          <span className="font-mono text-sm font-semibold uppercase tracking-widest text-cyan-400">
-            // contact
-          </span>
-          <h2
-            id="contact-heading"
-            className="text-3xl font-bold tracking-tight text-white md:text-4xl"
-          >
-            Get in touch
-          </h2>
-          <p className="mt-1 text-sm text-zinc-400 leading-relaxed">
-            Have a project in mind, a question, or just want to say hi?
-            Fill out the form and I&apos;ll get back to you.
-          </p>
-        </div>
+          {/* ── Left column ──────────────────────────────────────────────── */}
+          <div className="flex flex-col justify-center">
+            <p className="font-jetbrains text-xs tracking-widest mb-4" style={{ color: "var(--muted)" }}>
+              [ GET IN TOUCH ]
+            </p>
+            <h2
+              className="font-syne font-black text-5xl text-[#f5f5f5] leading-tight"
+              style={{ letterSpacing: "-0.03em" }}
+            >
+              Let&apos;s{" "}
+              <span className="word-highlight">Work</span>
+              <br />
+              Together.
+            </h2>
+            <p className="mt-4 text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
+              Open for freelance and full-time opportunities. Let&apos;s
+              build something great together.
+            </p>
 
-        {/* Form card */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 md:p-8 backdrop-blur-sm">
-          <ContactForm />
+            {/* Social links */}
+            <div className="mt-6 flex gap-4">
+              <a
+                href="https://github.com/nodeshift"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub"
+                style={{ color: "var(--muted)" }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--accent)")}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--muted)")}
+                className="transition-colors duration-200"
+              >
+                <Github className="h-5 w-5" />
+              </a>
+            </div>
+          </div>
+
+          {/* Vertical divider */}
+          <div
+            className="hidden self-stretch md:block"
+            style={{ width: 1, background: "var(--border)", margin: "0 2rem" }}
+            aria-hidden="true"
+          />
+
+          {/* ── Right column — form ───────────────────────────────────────── */}
+          <div>
+            <ContactForm />
+          </div>
         </div>
       </div>
     </section>

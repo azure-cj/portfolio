@@ -1,247 +1,125 @@
 "use client";
 
 import { useState, ChangeEvent, FormEvent } from "react";
-import { Send, Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
 
-interface FormFields {
-  name: string;
-  email: string;
-  message: string;
-}
-
-interface FormErrors {
-  name?: string;
-  email?: string;
-  message?: string;
-}
-
-type SubmitStatus = "idle" | "loading" | "success" | "error";
+interface FormFields { name: string; email: string; message: string; }
+interface FormErrors { name?: string; email?: string; message?: string; }
+type Status = "idle" | "loading" | "success" | "error";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function validate(fields: FormFields): FormErrors {
-  const errors: FormErrors = {};
-
-  if (!fields.name.trim()) {
-    errors.name = "Name is required.";
-  }
-
-  if (!fields.email.trim()) {
-    errors.email = "Email is required.";
-  } else if (!EMAIL_RE.test(fields.email.trim())) {
-    errors.email = "Please enter a valid email address.";
-  }
-
-  if (!fields.message.trim()) {
-    errors.message = "Message is required.";
-  } else if (fields.message.trim().length < 10) {
-    errors.message = "Message must be at least 10 characters.";
-  }
-
-  return errors;
+function validate(f: FormFields): FormErrors {
+  const e: FormErrors = {};
+  if (!f.name.trim())                      e.name    = "Name is required.";
+  if (!f.email.trim())                     e.email   = "Email is required.";
+  else if (!EMAIL_RE.test(f.email.trim())) e.email   = "Enter a valid email.";
+  if (!f.message.trim())                   e.message = "Message is required.";
+  else if (f.message.trim().length < 10)   e.message = "At least 10 characters.";
+  return e;
 }
 
-// Shared input/textarea class builder
+const labelCls = "block font-jetbrains text-xs uppercase tracking-wider mb-2";
 const inputBase = [
-  "w-full rounded-md border bg-zinc-900 px-4 py-3",
-  "font-mono text-sm text-zinc-100 placeholder-zinc-600",
-  "outline-none transition-colors duration-150",
-  "border-zinc-700 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/40",
+  "w-full bg-transparent pb-3 pt-1 font-jetbrains text-sm text-[#f5f5f5]",
+  "placeholder:text-zinc-700 outline-none transition-colors duration-200",
+  "border-b border-zinc-800 focus:border-[var(--accent)]",
 ].join(" ");
-
-const errorBase = "mt-1.5 font-mono text-xs text-red-400";
+const errCls = "mt-1.5 font-jetbrains text-xs text-red-400";
 
 export default function ContactForm() {
-  const [fields, setFields] = useState<FormFields>({
-    name: "",
-    email: "",
-    message: "",
-  });
+  const [fields, setFields] = useState<FormFields>({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<FormErrors>({});
-  const [status, setStatus] = useState<SubmitStatus>("idle");
-  const [serverError, setServerError] = useState<string>("");
+  const [status, setStatus] = useState<Status>("idle");
+  const [serverErr, setServerErr] = useState("");
 
   function handleChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
-    setFields((prev) => ({ ...prev, [name]: value }));
-    // Clear the inline error for the field being edited
-    if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({ ...prev, [name]: undefined }));
-    }
+    setFields((p) => ({ ...p, [name]: value }));
+    if (errors[name as keyof FormErrors])
+      setErrors((p) => ({ ...p, [name]: undefined }));
   }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
-    const validationErrors = validate(fields);
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-
-    setStatus("loading");
-    setServerError("");
-
+    const errs = validate(fields);
+    if (Object.keys(errs).length) { setErrors(errs); return; }
+    setStatus("loading"); setServerErr("");
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(fields),
-      });
-
-      const data = (await res.json()) as { success: boolean; error?: string };
-
-      if (data.success) {
-        setStatus("success");
-        setFields({ name: "", email: "", message: "" });
-      } else {
-        setStatus("error");
-        setServerError(data.error ?? "Something went wrong. Please try again.");
-      }
-    } catch {
-      setStatus("error");
-      setServerError("Network error. Please check your connection and try again.");
-    }
+      const res  = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(fields) });
+      const data = await res.json() as { success: boolean; error?: string };
+      if (data.success) { setStatus("success"); setFields({ name: "", email: "", message: "" }); }
+      else { setStatus("error"); setServerErr(data.error ?? "Something went wrong."); }
+    } catch { setStatus("error"); setServerErr("Network error. Please try again."); }
   }
 
   if (status === "success") {
     return (
-      <div className="flex flex-col items-center gap-4 rounded-xl border border-cyan-400/30 bg-cyan-400/5 px-8 py-14 text-center">
-        <CheckCircle className="h-10 w-10 text-cyan-400" aria-hidden="true" />
-        <h3 className="font-mono text-lg font-semibold text-white">
-          Message sent!
-        </h3>
-        <p className="text-sm text-zinc-400">
-          Thanks for reaching out — I&apos;ll get back to you soon.
-        </p>
-        <button
-          type="button"
-          onClick={() => setStatus("idle")}
-          className="mt-2 font-mono text-xs text-cyan-400 underline underline-offset-4 hover:text-cyan-300 transition-colors"
-        >
-          Send another message
+      <div className="flex flex-col items-center gap-4 py-16 text-center">
+        <CheckCircle className="h-10 w-10" style={{ color: "var(--accent)" }} />
+        <p className="font-syne font-bold text-xl text-[#f5f5f5]">Message sent!</p>
+        <p className="font-jetbrains text-sm" style={{ color: "var(--muted)" }}>We&apos;ll get back to you soon.</p>
+        <button type="button" onClick={() => setStatus("idle")}
+          className="font-jetbrains text-xs underline underline-offset-4 transition-colors"
+          style={{ color: "var(--accent)" }}>
+          Send another
         </button>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
+    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-7">
       {/* Name */}
       <div>
-        <label
-          htmlFor="contact-name"
-          className="mb-1.5 block font-mono text-xs font-semibold uppercase tracking-widest text-zinc-400"
-        >
-          Name
-        </label>
-        <input
-          id="contact-name"
-          name="name"
-          type="text"
-          autoComplete="name"
-          placeholder="Jane Smith"
-          value={fields.name}
-          onChange={handleChange}
-          aria-describedby={errors.name ? "contact-name-error" : undefined}
-          aria-invalid={!!errors.name}
-          className={`${inputBase} ${errors.name ? "border-red-500 focus:border-red-500 focus:ring-red-500/30" : ""}`}
-        />
-        {errors.name && (
-          <p id="contact-name-error" role="alert" className={errorBase}>
-            {errors.name}
-          </p>
-        )}
+        <label htmlFor="cf-name" className={labelCls} style={{ color: "var(--muted)" }}>Name</label>
+        <input id="cf-name" name="name" type="text" autoComplete="name" placeholder="Jane Smith"
+          value={fields.name} onChange={handleChange} aria-invalid={!!errors.name} className={inputBase} />
+        {errors.name && <p role="alert" className={errCls}>{errors.name}</p>}
       </div>
 
       {/* Email */}
       <div>
-        <label
-          htmlFor="contact-email"
-          className="mb-1.5 block font-mono text-xs font-semibold uppercase tracking-widest text-zinc-400"
-        >
-          Email
-        </label>
-        <input
-          id="contact-email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          placeholder="jane@example.com"
-          value={fields.email}
-          onChange={handleChange}
-          aria-describedby={errors.email ? "contact-email-error" : undefined}
-          aria-invalid={!!errors.email}
-          className={`${inputBase} ${errors.email ? "border-red-500 focus:border-red-500 focus:ring-red-500/30" : ""}`}
-        />
-        {errors.email && (
-          <p id="contact-email-error" role="alert" className={errorBase}>
-            {errors.email}
-          </p>
-        )}
+        <label htmlFor="cf-email" className={labelCls} style={{ color: "var(--muted)" }}>Email</label>
+        <input id="cf-email" name="email" type="email" autoComplete="email" placeholder="jane@example.com"
+          value={fields.email} onChange={handleChange} aria-invalid={!!errors.email} className={inputBase} />
+        {errors.email && <p role="alert" className={errCls}>{errors.email}</p>}
       </div>
 
       {/* Message */}
       <div>
-        <label
-          htmlFor="contact-message"
-          className="mb-1.5 block font-mono text-xs font-semibold uppercase tracking-widest text-zinc-400"
-        >
-          Message
-        </label>
-        <textarea
-          id="contact-message"
-          name="message"
-          rows={6}
-          placeholder="Tell me about your project…"
-          value={fields.message}
-          onChange={handleChange}
-          aria-describedby={errors.message ? "contact-message-error" : undefined}
-          aria-invalid={!!errors.message}
-          className={`${inputBase} resize-none ${errors.message ? "border-red-500 focus:border-red-500 focus:ring-red-500/30" : ""}`}
-        />
-        {errors.message && (
-          <p id="contact-message-error" role="alert" className={errorBase}>
-            {errors.message}
-          </p>
-        )}
+        <label htmlFor="cf-message" className={labelCls} style={{ color: "var(--muted)" }}>Message</label>
+        <textarea id="cf-message" name="message" rows={5} placeholder="Tell us about your project…"
+          value={fields.message} onChange={handleChange} aria-invalid={!!errors.message}
+          className={`${inputBase} resize-none`} />
+        {errors.message && <p role="alert" className={errCls}>{errors.message}</p>}
       </div>
 
-      {/* Server-level error */}
-      {status === "error" && serverError && (
-        <div
-          role="alert"
-          className="flex items-center gap-2 rounded-md border border-red-500/30 bg-red-500/10 px-4 py-3 font-mono text-sm text-red-400"
-        >
-          <AlertCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
-          {serverError}
+      {/* Server error */}
+      {status === "error" && serverErr && (
+        <div role="alert" className="flex items-center gap-2 rounded-lg border px-4 py-3 font-jetbrains text-sm text-red-400"
+          style={{ borderColor: "rgba(239,68,68,0.3)", background: "rgba(239,68,68,0.08)" }}>
+          <AlertCircle className="h-4 w-4 shrink-0" />{serverErr}
         </div>
       )}
 
       {/* Submit */}
-      <button
-        type="submit"
-        disabled={status === "loading"}
-        className={[
-          "mt-1 inline-flex items-center justify-center gap-2 rounded-md px-6 py-3",
-          "font-mono text-sm font-semibold tracking-wide text-zinc-900",
-          "bg-cyan-400 transition-all duration-200",
-          "hover:bg-cyan-300 hover:shadow-[0_0_20px_0_rgba(34,211,238,0.45)]",
-          "disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950",
-        ].join(" ")}
+      <button type="submit" disabled={status === "loading"}
+        className="w-full rounded-xl py-4 font-syne font-bold text-sm text-black transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60"
+        style={{ background: "var(--accent)" }}
+        onMouseEnter={(e) => {
+          if (status !== "loading") {
+            (e.currentTarget as HTMLElement).style.filter = "brightness(1.1)";
+            (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px var(--accent-glow)";
+          }
+        }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.filter = ""; (e.currentTarget as HTMLElement).style.boxShadow = ""; }}
       >
         {status === "loading" ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-            Sending…
-          </>
-        ) : (
-          <>
-            <Send className="h-4 w-4" aria-hidden="true" />
-            Send Message
-          </>
-        )}
+          <span className="flex items-center justify-center gap-2">
+            <Loader2 className="h-4 w-4 animate-spin" />Sending…
+          </span>
+        ) : "Send Message"}
       </button>
     </form>
   );

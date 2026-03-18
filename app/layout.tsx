@@ -1,26 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
+import Navbar from "@/components/Navbar";
 import "./globals.css";
 
+/* Geist Sans still loaded for body/fallback use */
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-// ── Site-wide metadata ────────────────────────────────────────────────────────
-// Update SITE_URL to your production domain before deploying.
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://yourname.dev";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nodeshift.dev";
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    // TODO: replace with your team / studio name
     default: "NodeShift — Full-Stack Development Team",
     template: "%s | NodeShift",
   },
@@ -32,14 +26,7 @@ export const metadata: Metadata = {
       "We are a two-person full-stack development team building modern web applications with React, Next.js, and TypeScript.",
     url: SITE_URL,
     siteName: "NodeShift Portfolio",
-    images: [
-      {
-        url: OG_IMAGE,
-        width: 1200,
-        height: 630,
-        alt: "NodeShift — Full-Stack Development Team",
-      },
-    ],
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "NodeShift" }],
     locale: "en_US",
     type: "website",
   },
@@ -49,41 +36,29 @@ export const metadata: Metadata = {
     description:
       "We are a two-person full-stack development team building modern web applications with React, Next.js, and TypeScript.",
     images: [OG_IMAGE],
-    // creator: "@yourteamhandle",
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true },
-  },
-  icons: {
-    icon: "/favicon.ico",
-  },
+  robots: { index: true, follow: true },
+  icons: { icon: "/favicon.ico" },
 };
 
-// Viewport / theme-color (dark mode optimised)
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)",  color: "#0a0a0a" },
+    { media: "(prefers-color-scheme: light)", color: "#0a0a0a" },
   ],
-  colorScheme: "dark light",
+  colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
 };
 
-// ── Root layout ───────────────────────────────────────────────────────────────
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0a0a0a] text-zinc-100`}
-      >
-        {children}
+      <body className={`${geistSans.variable} bg-[#0a0a0a] text-[#f5f5f5] antialiased`}>
+        <Navbar />
+        <main className="pt-[60px]">{children}</main>
       </body>
     </html>
   );
