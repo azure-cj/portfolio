@@ -57,6 +57,7 @@ const projects: Project[] = [
     category: "Website",
     image: "https://placehold.co/600x340/141414/b9ff4b?text=NU+Lost+%26+Found",
     github: "https://github.com/nodeshift/nufv-lostandfound",
+    live: "https://nufvlostandfound.wuaze.com/nufvLostAndFound/index.php?i=1",
   },
   {
     title: "Moneda",
@@ -76,6 +77,16 @@ const projects: Project[] = [
     image: "https://placehold.co/600x340/141414/b9ff4b?text=Moneda",
     live: "https://moneda-nine.vercel.app",
     featured: true,
+  },
+  {
+    title: "Sahagun Dental Care Services",
+    description:
+      "A fully responsive, professional landing page for a dental clinic in Camarin, Caloocan. Features a clean, modern UI with smooth animations, scroll-triggered reveals, and an inquiry form with Formspree backend integration.",
+    stack: ["HTML5", "CSS3", "Vanilla JavaScript", "Formspree API"],
+    category: "Website",
+    image: "https://placehold.co/600x340/141414/b9ff4b?text=Sahagun+Dental",
+    github: "https://github.com/imainzed5/sahagun-dental-care",
+    live: "https://sahagun-dental-care.vercel.app",
   },
 ];
 
