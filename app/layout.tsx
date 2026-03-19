@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import IntroWrapper from "@/components/IntroWrapper";
 import "./globals.css";
 
 /* Geist Sans still loaded for body/fallback use */
@@ -57,8 +59,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${geistSans.variable} bg-[#0a0a0a] text-[#f5f5f5] antialiased`}>
-        <Navbar />
-        <main className="pt-[60px]">{children}</main>
+        <IntroWrapper>
+          <Navbar />
+          <main className="pt-[60px]">{children}</main>
+          <Footer />
+        </IntroWrapper>
       </body>
     </html>
   );

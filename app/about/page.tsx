@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, GraduationCap } from "lucide-react";
 import SkillBadge from "@/components/SkillBadge";
 import type { Skill } from "@/data/skills";
 
@@ -52,7 +52,7 @@ const DEVELOPERS: Developer[] = [
       { variant: "accent", title: "DEVELOPMENT", content: "Next.js, React, Node.js, MongoDB" },
       { variant: "dark", title: "MANAGEMENT", content: "Project Planning, Git Flow, Vercel, Agile" },
     ],
-    contactHref: "/#contact",
+    contactHref: "/contact",
   },
   {
     id: "lord",
@@ -64,7 +64,7 @@ const DEVELOPERS: Developer[] = [
       { variant: "accent", title: "STACK", content: "React, Next.js, Node.js, TypeScript" },
       { variant: "dark", title: "TOOLS", content: "MongoDB, PostgreSQL, Tailwind, Figma" },
     ],
-    contactHref: "/#contact",
+    contactHref: "/contact",
   },
 ];
 
@@ -122,6 +122,16 @@ function DeveloperCard({ dev, delay }: { dev: Developer; delay: number }) {
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-zinc-400">
               {dev.bio}
             </p>
+
+            {/* Education */}
+            <div className="border-t my-4" style={{ borderColor: "var(--border)" }} />
+            <div className="flex items-center gap-3">
+              <GraduationCap size={14} style={{ color: "var(--accent)", flexShrink: 0 }} />
+              <div>
+                <p className="font-jetbrains text-[10px] tracking-widest uppercase text-zinc-600">Education</p>
+                <p className="font-jetbrains text-xs text-zinc-300 font-medium">NU Fairview</p>
+              </div>
+            </div>
           </div>
 
           {/* Specialty cards */}
@@ -283,7 +293,7 @@ export default function AboutPage() {
           We&apos;re open for freelance and collaboration.
         </p>
         <Link
-          href="/#contact"
+          href="/contact"
           className="mt-6 inline-block rounded-xl px-7 py-4 font-syne font-bold text-sm text-black transition-all duration-200"
           style={{ background: "var(--accent)" }}
           onMouseEnter={(e) => {

@@ -116,7 +116,7 @@ export default function Hero() {
           </div>
 
           {/* 4 — CTAs */}
-          <div className="animate-fade-up-d6 mt-10 flex flex-wrap gap-4">
+          <div className="animate-fade-up-d6 mt-10">
             <Link
               href="/projects"
               className="rounded-full font-syne font-bold text-sm px-7 py-4 text-black transition-all duration-200"
@@ -135,21 +135,6 @@ export default function Hero() {
             >
               View Our Work
             </Link>
-            <a
-              href="#contact"
-              className="rounded-full text-sm px-7 py-4 transition-all duration-200"
-              style={{ border: "1px solid var(--border)", color: "var(--muted)" }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.2)";
-                (e.currentTarget as HTMLElement).style.color = "#f5f5f5";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
-                (e.currentTarget as HTMLElement).style.color = "var(--muted)";
-              }}
-            >
-              Download CV
-            </a>
           </div>
         </div>
       </section>

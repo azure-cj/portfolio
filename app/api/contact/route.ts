@@ -1,75 +1,51 @@
-import { NextRequest, NextResponse } from "next/server";
-import { sendContactEmail } from "@/lib/sendEmail";
+// NOTE: GMAIL_PASS must be a Gmail App Password, NOT your regular Gmail password.
+// To generate one: Google Account → Security → 2-Step Verification → App Passwords
+// Create an app password for "Mail" and paste it in .env.local as GMAIL_PASS
+// Also add GMAIL_USER and GMAIL_PASS in Vercel dashboard → Settings → Environment Variables
 
-interface ContactBody {
-  name?: unknown;
-  email?: unknown;
-  message?: unknown;
-}
+import { NextResponse } from "next/server";
+import nodemailer from "nodemailer";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-export async function POST(req: NextRequest) {
-  let body: ContactBody;
-
+export async function POST(req: Request) {
   try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json(
-      { success: false, error: "Invalid request body." },
-      { status: 400 }
-    );
-  }
+    const { name, email, message } = await req.json();
 
-  const { name, email, message } = body;
+    if (!name || !email || !message) {
+      return NextResponse.json(
+        { success: false, error: "All fields required" },
+        { status: 400 }
+      );
+    }
 
-  // ── Server-side validation ───────────────────────────────────────────────
-  if (!name || typeof name !== "string" || name.trim().length === 0) {
-    return NextResponse.json(
-      { success: false, error: "Name is required." },
-      { status: 422 }
-    );
-  }
-
-  if (
-    !email ||
-    typeof email !== "string" ||
-    !EMAIL_RE.test(email.trim())
-  ) {
-    return NextResponse.json(
-      { success: false, error: "A valid email address is required." },
-      { status: 422 }
-    );
-  }
-
-  if (
-    !message ||
-    typeof message !== "string" ||
-    message.trim().length < 10
-  ) {
-    return NextResponse.json(
-      { success: false, error: "Message must be at least 10 characters." },
-      { status: 422 }
-    );
-  }
-
-  // ── Send via Resend ──────────────────────────────────────────────────────
-  try {
-    await sendContactEmail({
-      name: name.trim(),
-      email: email.trim(),
-      message: message.trim(),
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
+      },
     });
 
-    return NextResponse.json({ success: true }, { status: 200 });
+    await transporter.sendMail({
+      from: `"NodeShift Contact" <${process.env.GMAIL_USER}>`,
+      to: "christopheraureo18@gmail.com",
+      replyTo: email,
+      subject: `New message from ${name}`,
+      html: `
+        <div style="font-family:monospace;background:#0a0a0a;color:#fff;padding:24px;border-radius:8px;">
+          <h2 style="color:#b9ff4b;">New Contact Form Submission</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Message:</strong></p>
+          <p style="color:#a1a1aa;">${message}</p>
+        </div>
+      `,
+    });
+
+    return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("[contact] sendEmail error:", err);
+    console.error("[contact] error:", err);
     return NextResponse.json(
-      {
-        success: false,
-        error:
-          "Failed to send your message. Please try again later.",
-      },
+      { success: false, error: "Failed to send" },
       { status: 500 }
     );
   }

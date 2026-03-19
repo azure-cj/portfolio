@@ -9,7 +9,7 @@ const NAV_LINKS = [
   { label: "About",    href: "/about"    },
   { label: "Projects", href: "/projects" },
   { label: "Skills",   href: "/#skills"  },
-  { label: "Contact",  href: "/#contact" },
+  { label: "Contact",  href: "/contact"  },
 ];
 
 export default function Navbar() {
@@ -83,7 +83,7 @@ export default function Navbar() {
 
         {/* Hire Me CTA */}
         <Link
-          href="/#contact"
+          href="/contact"
           className="hidden rounded-full px-4 py-2 font-jetbrains text-sm transition-all duration-200 md:block"
           style={{
             border: "1px solid var(--accent)",
@@ -132,7 +132,7 @@ export default function Navbar() {
           ))}
           <li className="pt-3">
             <Link
-              href="/#contact"
+              href="/contact"
               onClick={() => setOpen(false)}
               className="inline-block rounded-full px-4 py-2 font-jetbrains text-sm"
               style={{ border: "1px solid var(--accent)", color: "var(--accent)" }}

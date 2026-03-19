@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function CTA() {
   return (
     <section
@@ -35,8 +37,8 @@ export default function CTA() {
         <p className="text-sm" style={{ color: "var(--muted)" }}>
           Open for freelance and full-time opportunities.
         </p>
-        <a
-          href="#contact"
+        <Link
+          href="/contact"
           className="rounded-full font-syne font-bold text-sm px-8 py-4 text-black transition-all duration-200"
           style={{ background: "var(--accent)" }}
           onMouseEnter={(e) => {
@@ -49,7 +51,7 @@ export default function CTA() {
           }}
         >
           Get In Touch
-        </a>
+        </Link>
       </div>
     </section>
   );
