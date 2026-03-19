@@ -58,6 +58,25 @@ const projects: Project[] = [
     image: "https://placehold.co/600x340/141414/b9ff4b?text=NU+Lost+%26+Found",
     github: "https://github.com/nodeshift/nufv-lostandfound",
   },
+  {
+    title: "Moneda",
+    description:
+      "A Filipino-focused personal finance PWA targeting freelancers, students, and fresh graduates. Built with an emotional narrative-driven design sensibility, offering clean UX and reliable performance.",
+    stack: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Supabase",
+      "Tailwind CSS",
+      "Chart.js",
+      "PWA",
+      "WebSockets"
+    ],
+    category: "Website",
+    image: "https://placehold.co/600x340/141414/b9ff4b?text=Moneda",
+    live: "https://moneda-nine.vercel.app",
+    featured: true,
+  },
 ];
 
 export default projects;
