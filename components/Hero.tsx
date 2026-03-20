@@ -4,9 +4,9 @@ import Link from "next/link";
 
 const MARQUEE_WORDS = "FULL STACK DEVELOPER · NEXT.JS · REACT · NODE.JS · AVAILABLE FOR WORK · ";
 const STATS = [
-  { value: "2+", label: "Years of Experience" },
-  { value: "1", label: "Projects Delivered" },
-  { value: "1", label: "Satisfied Clients" },
+  { value: "4+", label: "Years of Experience" },
+  { value: "7", label: "Projects Delivered" },
+  { value: "7", label: "Satisfied Clients" },
 ];
 
 export default function Hero() {
