@@ -10,8 +10,9 @@ const TABS: FilterTab[] = ["All", "Website", "Mobile", "Desktop", "Design"];
 export default function ProjectsPage() {
   const [active, setActive] = useState<FilterTab>("All");
 
-  const filtered =
-    active === "All" ? projects : projects.filter((p) => p.category === active);
+  const filtered = (
+    active === "All" ? projects : projects.filter((p) => p.category === active)
+  ).sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
 
   return (
     <div className="min-h-screen" style={{ background: "var(--bg)" }}>

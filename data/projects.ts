@@ -12,6 +12,7 @@ export interface Project {
 }
 
 const projects: Project[] = [
+  // --- Featured ---
   {
     title: "Gesture Mouse",
     description:
@@ -21,6 +22,56 @@ const projects: Project[] = [
     image: "https://placehold.co/600x340/141414/b9ff4b?text=Gesture+Mouse",
     github: "https://github.com/nodeshift/gesture-mouse",
     featured: true,
+  },
+  {
+    title: "Moneda",
+    description:
+      "A Filipino-focused personal finance PWA targeting freelancers, students, and fresh graduates. Built with an emotional narrative-driven design sensibility, offering clean UX and reliable performance.",
+    stack: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Supabase",
+      "Tailwind CSS",
+      "Chart.js",
+      "PWA",
+      "WebSockets",
+    ],
+    category: "Website",
+    image: "https://placehold.co/600x340/141414/b9ff4b?text=Moneda",
+    live: "https://moneda-nine.vercel.app",
+    featured: true,
+  },
+  {
+    title: "Vince — Real-Time Team Workspace",
+    description:
+      "A lightweight, real-time collaboration app for small freelance teams and student groups (2–6 people). Combines a 5-column kanban board, shared notes, group chat, and an activity feed into one focused workspace — no bloat, no enterprise overhead. Built to help small teams get clarity and move work forward.",
+    stack: [
+      "Next.js 14",
+      "TypeScript",
+      "Tailwind CSS",
+      "Supabase",
+      "Zustand",
+      "dnd-kit",
+      "shadcn/ui",
+      "Framer Motion",
+    ],
+    category: "Website",
+    image: "https://placehold.co/600x340/141414/b9ff4b?text=Vince",
+    github: "https://github.com/imainzed5",
+    live: "https://vince-app.dev",
+    featured: true,
+  },
+  // --- Other Projects ---
+  {
+    title: "Sahagun Dental Care Services",
+    description:
+      "A fully responsive, professional landing page for a dental clinic in Camarin, Caloocan. Features a clean, modern UI with smooth animations, scroll-triggered reveals, and an inquiry form with Formspree backend integration.",
+    stack: ["HTML5", "CSS3", "Vanilla JavaScript", "Formspree API"],
+    category: "Website",
+    image: "https://placehold.co/600x340/141414/b9ff4b?text=Sahagun+Dental",
+    github: "https://github.com/imainzed5/sahagun-dental-care",
+    live: "https://sahagun-dental-care.vercel.app",
   },
   {
     title: "Pc-Part-Picker",
@@ -58,35 +109,6 @@ const projects: Project[] = [
     image: "https://placehold.co/600x340/141414/b9ff4b?text=NU+Lost+%26+Found",
     github: "https://github.com/nodeshift/nufv-lostandfound",
     live: "https://nufvlostandfound.wuaze.com/nufvLostAndFound/index.php?i=1",
-  },
-  {
-    title: "Moneda",
-    description:
-      "A Filipino-focused personal finance PWA targeting freelancers, students, and fresh graduates. Built with an emotional narrative-driven design sensibility, offering clean UX and reliable performance.",
-    stack: [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Supabase",
-      "Tailwind CSS",
-      "Chart.js",
-      "PWA",
-      "WebSockets"
-    ],
-    category: "Website",
-    image: "https://placehold.co/600x340/141414/b9ff4b?text=Moneda",
-    live: "https://moneda-nine.vercel.app",
-    featured: true,
-  },
-  {
-    title: "Sahagun Dental Care Services",
-    description:
-      "A fully responsive, professional landing page for a dental clinic in Camarin, Caloocan. Features a clean, modern UI with smooth animations, scroll-triggered reveals, and an inquiry form with Formspree backend integration.",
-    stack: ["HTML5", "CSS3", "Vanilla JavaScript", "Formspree API"],
-    category: "Website",
-    image: "https://placehold.co/600x340/141414/b9ff4b?text=Sahagun+Dental",
-    github: "https://github.com/imainzed5/sahagun-dental-care",
-    live: "https://sahagun-dental-care.vercel.app",
   },
 ];
 
