@@ -1,7 +1,9 @@
-import projects from "@/data/projects";
+import projects, { getProjectsWithFeaturedFirst } from "@/data/projects";
 import ProjectCard from "@/components/ProjectCard";
 
 export default function Projects() {
+  const orderedProjects = getProjectsWithFeaturedFirst(projects);
+
   return (
     <section id="projects" className="px-6 py-24 md:px-12 lg:px-24">
       <div className="mx-auto max-w-6xl">
@@ -15,7 +17,7 @@ export default function Projects() {
 
         {/* Grid */}
         <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
+          {orderedProjects.map((project) => (
             <li key={project.title}>
               <ProjectCard project={project} />
             </li>

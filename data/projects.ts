@@ -11,6 +11,13 @@ export interface Project {
   featured?: boolean;
 }
 
+export function getProjectsWithFeaturedFirst(projectList: readonly Project[]): Project[] {
+  const featuredProjects = projectList.filter((project) => project.featured);
+  const otherProjects = projectList.filter((project) => !project.featured);
+
+  return [...featuredProjects, ...otherProjects];
+}
+
 const projects: Project[] = [
   // --- Featured ---
   {
