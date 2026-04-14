@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
+<<<<<<< HEAD
 import projects, { type Project, type ProjectCategory } from "@/data/projects";
+=======
+import projects, { getProjectsWithFeaturedFirst, type ProjectCategory } from "@/data/projects";
+>>>>>>> 56900487406e2b3448d291f088bbb13c71a5fb16
 import ProjectCard from "@/components/ProjectCard";
 import ProjectModal from "@/components/ProjectModal";
 
@@ -12,8 +16,11 @@ export default function ProjectsPage() {
   const [active, setActive] = useState<FilterTab>("All");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const filtered =
-    active === "All" ? projects : projects.filter((p) => p.category === active);
+  const filteredProjects = active === "All"
+    ? projects
+    : projects.filter((project) => project.category === active);
+
+  const orderedProjects = getProjectsWithFeaturedFirst(filteredProjects);
 
   return (
     <div className="min-h-screen" style={{ background: "var(--bg)" }}>
@@ -102,7 +109,7 @@ export default function ProjectsPage() {
 
       {/* ── Projects grid ─────────────────────────────────────────────────── */}
       <div className="mx-auto max-w-6xl px-6 py-16 md:px-16 lg:px-24">
-        {filtered.length === 0 ? (
+        {orderedProjects.length === 0 ? (
           <div
             className="flex flex-col items-center justify-center gap-3 rounded-2xl border py-24 text-center"
             style={{ border: "1px dashed var(--border)" }}
@@ -114,7 +121,7 @@ export default function ProjectsPage() {
           </div>
         ) : (
           <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((project) => (
+            {orderedProjects.map((project) => (
               <li key={project.title}>
                 <ProjectCard project={project} onOpenProject={setSelectedProject} />
               </li>
