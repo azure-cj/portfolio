@@ -11,6 +11,13 @@ export interface Project {
   featured?: boolean;
 }
 
+export function getProjectsWithFeaturedFirst(projectList: readonly Project[]): Project[] {
+  const featuredProjects = projectList.filter((project) => project.featured);
+  const otherProjects = projectList.filter((project) => !project.featured);
+
+  return [...featuredProjects, ...otherProjects];
+}
+
 const projects: Project[] = [
   {
     title: "Gesture Mouse",
@@ -55,9 +62,10 @@ const projects: Project[] = [
       "Lost and Found website for National University Fairview — lets students report and claim lost items with an admin moderation panel.",
     stack: ["PHP", "MySQL", "HTML", "CSS"],
     category: "Website",
-    image: "https://placehold.co/600x340/141414/b9ff4b?text=NU+Lost+%26+Found",
+    image: "/nufvlostandfound.png",
     github: "https://github.com/nodeshift/nufv-lostandfound",
-    live: "https://nufvlostandfound.wuaze.com/nufvLostAndFound/index.php?i=1",
+    live: "https://nufv-lostandfound.vercel.app/",
+    featured: true,
   },
   {
     title: "Moneda",
@@ -74,8 +82,27 @@ const projects: Project[] = [
       "WebSockets"
     ],
     category: "Website",
-    image: "https://placehold.co/600x340/141414/b9ff4b?text=Moneda",
+    image: "/moneda.png",
     live: "https://moneda-nine.vercel.app",
+    featured: false,
+  },
+  {
+    title: "Vince - Real-Time Team Workspace",
+    description:
+      "A lightweight, real-time collaboration app for small freelance teams and student groups. It combines a focused kanban board, shared notes, group chat, and an activity feed into one workspace built for clarity and momentum.",
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Supabase",
+      "Zustand",
+      "dnd-kit",
+      "Framer Motion",
+    ],
+    category: "Website",
+    image: "/VINCE.png",
+    github: "https://github.com/imainzed5",
+    live: "https://vince-app.dev",
     featured: true,
   },
   {
@@ -84,7 +111,7 @@ const projects: Project[] = [
       "A fully responsive, professional landing page for a dental clinic in Camarin, Caloocan. Features a clean, modern UI with smooth animations, scroll-triggered reveals, and an inquiry form with Formspree backend integration.",
     stack: ["HTML5", "CSS3", "Vanilla JavaScript", "Formspree API"],
     category: "Website",
-    image: "https://placehold.co/600x340/141414/b9ff4b?text=Sahagun+Dental",
+    image: "/sahagun.png",
     github: "https://github.com/imainzed5/sahagun-dental-care",
     live: "https://sahagun-dental-care.vercel.app",
   },

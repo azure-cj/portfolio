@@ -1,14 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import projects, { type ProjectCategory } from "@/data/projects";
+import projects, { type Project, type ProjectCategory } from "@/data/projects";
 import ProjectCard from "@/components/ProjectCard";
+import ProjectModal from "@/components/ProjectModal";
 
 type FilterTab = "All" | ProjectCategory;
 const TABS: FilterTab[] = ["All", "Website", "Mobile", "Desktop", "Design"];
 
 export default function ProjectsPage() {
   const [active, setActive] = useState<FilterTab>("All");
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const filtered =
     active === "All" ? projects : projects.filter((p) => p.category === active);
@@ -114,12 +116,16 @@ export default function ProjectsPage() {
           <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((project) => (
               <li key={project.title}>
-                <ProjectCard project={project} />
+                <ProjectCard project={project} onOpenProject={setSelectedProject} />
               </li>
             ))}
           </ul>
         )}
       </div>
+
+      {selectedProject ? (
+        <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+      ) : null}
     </div>
   );
 }
